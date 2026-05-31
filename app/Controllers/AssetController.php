@@ -32,6 +32,7 @@ class AssetController extends BaseController
         $data['categories'] = $this->categoryModel->findAll();
         return view('assets/create', $data);
     }
+  
 
     public function store()
     {
@@ -42,10 +43,13 @@ class AssetController extends BaseController
             'status'      => 'required|in_list[Available,In Use,Repair]',
             'asset_image' => 'is_image[asset_image]|max_size[asset_image,2048]|mime_in[asset_image,image/jpg,image/jpeg,image/png]'
         ];
+  
+
 
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
+
 
         $imageName = null;
         $file = $this->request->getFile('asset_image');
@@ -68,6 +72,8 @@ class AssetController extends BaseController
         $categoryId = $this->request->getPost('category_id');
         $status     = $this->request->getPost('status');
 
+
+        
         $this->assetModel->save([
             'asset_code'  => $assetCode,
             'name'        => $assetName,
